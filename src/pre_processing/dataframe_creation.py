@@ -21,6 +21,7 @@ pos_reviews = load_reviews(input_pos, 'pos')
 neg_reviews = load_reviews(input_neg, 'neg')
 
 df = pd.DataFrame(pos_reviews + neg_reviews)
+df['label'] = df['label'].map({'pos': 1, 'neg': 0})
 
 output_path = 'data/data_intermediaire.parquet'
 df.to_parquet(output_path, index=False)
