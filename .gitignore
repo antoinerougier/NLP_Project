@@ -171,5 +171,8 @@ cython_debug/
 .pypirc
 
 *.tar
+*.parquet
 
 data/aclImdb/
+
+nlp/
