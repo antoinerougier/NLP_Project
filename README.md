@@ -10,8 +10,8 @@ This project focuses on sentiment analysis of movie reviews. We leverage techniq
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository_url>
-   cd <repository_name>
+   git clone <https://github.com/antoinerougier/NLP_Project.git>
+   cd <NLP_Project>
    ```
 
 2. **Install Dependencies**:
