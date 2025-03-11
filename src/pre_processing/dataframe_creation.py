@@ -1,9 +1,6 @@
 import os
 import pandas as pd
 
-input_pos = 'data/aclImdb/train/pos'
-input_neg = 'data/aclImdb/train/neg'
-
 def load_reviews(directory, label):
     """Charge les fichiers texte d'un répertoire et les étiquette."""
     reviews = []
@@ -17,13 +14,13 @@ def load_reviews(directory, label):
         print(f"Le répertoire {directory} n'existe pas.")
     return reviews
 
-pos_reviews = load_reviews(input_pos, 'pos')
-neg_reviews = load_reviews(input_neg, 'neg')
+def create_dataframe(input_pos, input_neg, output_path):
+    """Crée un DataFrame à partir des revues positives et négatives et le sauvegarde en format Parquet."""
+    pos_reviews = load_reviews(input_pos, 'pos')
+    neg_reviews = load_reviews(input_neg, 'neg')
 
-df = pd.DataFrame(pos_reviews + neg_reviews)
-df['label'] = df['label'].map({'pos': 1, 'neg': 0})
+    df = pd.DataFrame(pos_reviews + neg_reviews)
+    df['label'] = df['label'].map({'pos': 1, 'neg': 0})
 
-output_path = 'data/data_intermediaire.parquet'
-df.to_parquet(output_path, index=False)
-
-print(f"DataFrame sauvegardé en tant que {output_path}")
+    df.to_parquet(output_path, index=False)
+    print(f"DataFrame sauvegardé en tant que {output_path}")
