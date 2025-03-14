@@ -4,3 +4,5 @@ scikit-sklearn
 pyarrow
 fastparquet
 gensim
+wordcloud
+langdetect
