@@ -14,13 +14,21 @@ def load_reviews(directory, label):
         print(f"Le répertoire {directory} n'existe pas.")
     return reviews
 
-def create_dataframe(input_pos, input_neg, output_path):
-    """Crée un DataFrame à partir des revues positives et négatives et le sauvegarde en format Parquet."""
-    pos_reviews = load_reviews(input_pos, 'pos')
-    neg_reviews = load_reviews(input_neg, 'neg')
+def create_dataframe(input_pos_train, input_neg_train, input_pos_test, input_neg_test, output_path_train, output_path_test):
+    """Crée des DataFrames à partir des revues positives et négatives et les sauvegarde en format Parquet."""
+    pos_reviews_train = load_reviews(input_pos_train, 'pos')
+    neg_reviews_train = load_reviews(input_neg_train, 'neg')
+    pos_reviews_test = load_reviews(input_pos_test, 'pos')
+    neg_reviews_test = load_reviews(input_neg_test, 'neg')
 
-    df = pd.DataFrame(pos_reviews + neg_reviews)
-    df['label'] = df['label'].map({'pos': 1, 'neg': 0})
+    df_train = pd.DataFrame(pos_reviews_train + neg_reviews_train)
+    df_test = pd.DataFrame(pos_reviews_test + neg_reviews_test)
 
-    df.to_parquet(output_path, index=False)
-    print(f"DataFrame sauvegardé en tant que {output_path}")
+    df_train['label'] = df_train['label'].map({'pos': 1, 'neg': 0})
+    df_test['label'] = df_test['label'].map({'pos': 1, 'neg': 0})
+
+    df_train.to_parquet(output_path_train, index=False)
+    df_test.to_parquet(output_path_test, index=False)
+
+    print(f"DataFrame d'entraînement sauvegardé en tant que {output_path_train}")
+    print(f"DataFrame de test sauvegardé en tant que {output_path_test}")

@@ -1,25 +1,50 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import SVC
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 
 def load_data(file_path):
     """Charge les données à partir d'un fichier Parquet."""
     return pd.read_parquet(file_path)
 
-def preprocess_and_train(df):
-    """Prétraite les données et entraîne un modèle Naive Bayes."""
-    X_train, X_test, y_train, y_test = train_test_split(df['text'], df['label'], test_size=0.2, random_state=42)
+class NaiveBayesModel:
+    def __init__(self, vectorizer=None):
+        self.model = MultinomialNB()
+        self.vectorizer = vectorizer if vectorizer else TfidfVectorizer(stop_words='english', max_features=5000)
 
-    vectorizer = TfidfVectorizer(stop_words='english', max_features=5000)
-    X_train_tfidf = vectorizer.fit_transform(X_train)
-    X_test_tfidf = vectorizer.transform(X_test)
+    def train(self, df_train):
+        """Entraîne le modèle Naive Bayes."""
+        X_train_tfidf = self.vectorizer.fit_transform(df_train['text'])
+        self.model.fit(X_train_tfidf, df_train['label'])
 
-    model = MultinomialNB()
-    model.fit(X_train_tfidf, y_train)
+    def evaluate(self, df_test):
+        """Évalue le modèle Naive Bayes."""
+        X_test_tfidf = self.vectorizer.transform(df_test['text'])
+        y_pred = self.model.predict(X_test_tfidf)
+        return classification_report(df_test['label'], y_pred)
 
-    y_pred = model.predict(X_test_tfidf)
-    report = classification_report(y_test, y_pred)
+class SVMModel:
+    def __init__(self, vectorizer=None):
+        self.model = SVC(probability=True)
+        self.vectorizer = vectorizer if vectorizer else TfidfVectorizer(stop_words='english', max_features=5000)
+        self.param_grid = {
+            'C': [0.1, 1, 10],
+            'kernel': ['linear', 'rbf'],
+            'gamma': ['scale', 'auto']
+        }
 
-    return model, vectorizer, report
+    def train(self, df_train):
+        """Entraîne le modèle SVM avec validation croisée."""
+        X_train_tfidf = self.vectorizer.fit_transform(df_train['text'])
+        grid_search = GridSearchCV(self.model, self.param_grid, cv=5, scoring='accuracy', n_jobs=-1)
+        grid_search.fit(X_train_tfidf, df_train['label'])
+        self.best_model = grid_search.best_estimator_
+        print("Meilleurs paramètres pour SVM:", grid_search.best_params_)
+
+    def evaluate(self, df_test):
+        """Évalue le modèle SVM."""
+        X_test_tfidf = self.vectorizer.transform(df_test['text'])
+        y_pred = self.best_model.predict(X_test_tfidf)
+        return classification_report(df_test['label'], y_pred)
