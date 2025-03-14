@@ -6,3 +6,5 @@ fastparquet
 gensim
 wordcloud
 langdetect
+matplotlib
+nltk
