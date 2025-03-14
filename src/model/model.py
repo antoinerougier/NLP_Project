@@ -30,15 +30,15 @@ class SVMModel:
         self.model = SVC(probability=True)
         self.vectorizer = vectorizer if vectorizer else TfidfVectorizer(stop_words='english', max_features=5000)
         self.param_grid = {
-            'C': [0.1, 1, 10],
+            'C': [1, 10],
             'kernel': ['linear', 'rbf'],
-            'gamma': ['scale', 'auto']
+            'gamma': ['scale']
         }
 
     def train(self, df_train):
         """Entraîne le modèle SVM avec validation croisée."""
         X_train_tfidf = self.vectorizer.fit_transform(df_train['text'])
-        grid_search = GridSearchCV(self.model, self.param_grid, cv=5, scoring='accuracy', n_jobs=-1)
+        grid_search = GridSearchCV(self.model, self.param_grid, cv=3, scoring='accuracy', n_jobs=-1)
         grid_search.fit(X_train_tfidf, df_train['label'])
         self.best_model = grid_search.best_estimator_
         print("Meilleurs paramètres pour SVM:", grid_search.best_params_)

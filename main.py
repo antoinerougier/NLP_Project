@@ -3,7 +3,8 @@ import os
 from src.pre_processing.download_data import download_and_extract_data
 from src.pre_processing.pre_processing import extract_tar
 from src.pre_processing.dataframe_creation import create_dataframe
-from src.model.first_model import load_data, NaiveBayesModel, SVMModel
+from src.model.model import load_data, NaiveBayesModel, SVMModel
+from src.visualisation.viz import analyze_data 
 
 def main():
     # Chemins
@@ -25,6 +26,9 @@ def main():
 
     # Créer les DataFrames
     create_dataframe(input_pos_train, input_neg_train, input_pos_test, input_neg_test, output_path_train, output_path_test)
+
+    # Analyser les données d'entraînement
+    analyze_data(output_path_train)
 
     # Charger les données d'entraînement et de test
     df_train = load_data(output_path_train)
