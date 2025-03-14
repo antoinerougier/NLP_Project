@@ -7,6 +7,12 @@ from src.model.model import load_data, NaiveBayesModel, SVMModel
 from src.visualisation.viz import analyze_data 
 
 def main():
+
+    data_dir = "data"
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+        print(f"Dossier '{data_dir}' créé.")
+
     # Chemins
     url = "http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar"
     filename = "data/aclImdb_v1.tar"
