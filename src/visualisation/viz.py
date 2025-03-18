@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
 from langdetect import detect, DetectorFactory
 import nltk
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
 nltk.download('punkt')
 
@@ -55,3 +57,15 @@ def analyze_data(file_path):
         plt.show()
 
     return df
+
+
+def plot_confusion_matrix(y_true, y_pred, title, output_path):
+    """Trace et sauvegarde la matrice de confusion."""
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['Negative', 'Positive'], yticklabels=['Negative', 'Positive'])
+    plt.title(title)
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.savefig(output_path)
+    plt.show()
