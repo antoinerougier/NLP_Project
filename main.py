@@ -2,8 +2,8 @@ import os
 from src.preprocessing.download_data import download_and_extract_data
 from src.preprocessing.pre_processing import extract_tar
 from src.dataframe_creation import create_dataframe
-from src.model import load_data, NaiveBayesModel, SVMModel, LogisticRegressionModel
-from src.analysis import analyze_data
+from src.model.model import load_data, NaiveBayesModel, SVMModel, LogisticRegressionModel
+from src.visualisation.viz import analyze_data
 
 def main():
     # Créer le dossier 'data' s'il n'existe pas
