@@ -42,15 +42,19 @@ def main():
     # Initialiser et entraîner les modèles
     nb_model = NaiveBayesModel(use_svd=True)  # Activer la réduction de dimension
     nb_model.train(df_train)
+    print("Fin modele NaiveBayesModel avec reduction")
 
-    nb_model_ = NaiveBayesModel(use_svd=False)  # Activer la réduction de dimension
+    nb_model_ = NaiveBayesModel(use_svd=False)  
     nb_model_.train(df_train)
+    print("Fin modele NaiveBayesModel")
 
     svm_model = SVMModel()
     svm_model.train(df_train)
+    print("Fin modele SVM")
 
     lr_model = LogisticRegressionModel(use_svd=True)  # Activer la réduction de dimension
     lr_model.train(df_train)
+    print("Fin modele LogisticRegression")
 
     # Évaluer les modèles
     report_nb = nb_model.evaluate(df_test)
