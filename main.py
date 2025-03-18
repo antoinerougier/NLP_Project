@@ -1,13 +1,12 @@
 import os
-
-from src.pre_processing.download_data import download_and_extract_data
-from src.pre_processing.pre_processing import extract_tar
-from src.pre_processing.dataframe_creation import create_dataframe
-from src.model.model import load_data, NaiveBayesModel, SVMModel
-from src.visualisation.viz import analyze_data 
+from src.preprocessing.download_data import download_and_extract_data
+from src.preprocessing.pre_processing import extract_tar
+from src.dataframe_creation import create_dataframe
+from src.model import load_data, NaiveBayesModel, SVMModel, LogisticRegressionModel
+from src.analysis import analyze_data
 
 def main():
-
+    # Créer le dossier 'data' s'il n'existe pas
     data_dir = "data"
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
@@ -15,14 +14,14 @@ def main():
 
     # Chemins
     url = "http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar"
-    filename = "data/aclImdb_v1.tar"
-    extract_to = "data"
-    input_pos_train = os.path.join('data', 'aclImdb', 'train', 'pos')
-    input_neg_train = os.path.join('data', 'aclImdb', 'train', 'neg')
-    input_pos_test = os.path.join('data', 'aclImdb', 'test', 'pos')
-    input_neg_test = os.path.join('data', 'aclImdb', 'test', 'neg')
-    output_path_train = os.path.join('data', 'data_intermediaire_train.parquet')
-    output_path_test = os.path.join('data', 'data_intermediaire_test.parquet')
+    filename = os.path.join(data_dir, "aclImdb_v1.tar")
+    extract_to = data_dir
+    input_pos_train = os.path.join(data_dir, 'aclImdb', 'train', 'pos')
+    input_neg_train = os.path.join(data_dir, 'aclImdb', 'train', 'neg')
+    input_pos_test = os.path.join(data_dir, 'aclImdb', 'test', 'pos')
+    input_neg_test = os.path.join(data_dir, 'aclImdb', 'test', 'neg')
+    output_path_train = os.path.join(data_dir, 'data_intermediaire_train.parquet')
+    output_path_test = os.path.join(data_dir, 'data_intermediaire_test.parquet')
 
     # Télécharger et extraire les données
     download_and_extract_data(url, filename, extract_to)
@@ -41,22 +40,36 @@ def main():
     df_test = load_data(output_path_test)
 
     # Initialiser et entraîner les modèles
-    nb_model = NaiveBayesModel()
+    nb_model = NaiveBayesModel(use_svd=True)  # Activer la réduction de dimension
     nb_model.train(df_train)
+
+    nb_model_ = NaiveBayesModel(use_svd=False)  # Activer la réduction de dimension
+    nb_model_.train(df_train)
 
     svm_model = SVMModel()
     svm_model.train(df_train)
 
+    lr_model = LogisticRegressionModel(use_svd=True)  # Activer la réduction de dimension
+    lr_model.train(df_train)
+
     # Évaluer les modèles
     report_nb = nb_model.evaluate(df_test)
+    report_nb_ = nb_model_.evaluate(df_test)
     report_svm = svm_model.evaluate(df_test)
+    report_lr = lr_model.evaluate(df_test)
 
     # Afficher les rapports de classification
     print("Rapport de classification pour Naive Bayes :")
+    print(report_nb_)
+
+    print("Rapport de classification pour Naive Bayes avec réduction:")
     print(report_nb)
 
     print("Rapport de classification pour SVM :")
     print(report_svm)
+
+    print("Rapport de classification pour Logistic Regression :")
+    print(report_lr)
 
 if __name__ == "__main__":
     main()
