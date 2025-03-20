@@ -44,9 +44,9 @@ def main():
     nb_param_grid = {'alpha': [0.1, 1.0, 10.0, 20.0]}
     svm_param_grid = {
         'C': [0.1, 1, 10],
-        'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
-        'gamma': ['scale', 'auto'],
-        'degree': [2, 3, 4],  
+        'kernel': ['linear', 'rbf', 'poly'],
+        'gamma': ['scale'],
+        'degree': [2, 3],  
         'coef0': [0.0, 0.1, 0.5]  
     }
     lr_param_grid = {'C': [0.1, 1.0, 10.0], 'solver': ['liblinear', 'lbfgs']}
