@@ -10,3 +10,4 @@ matplotlib
 nltk
 joblib
 plotly
+kaleido
