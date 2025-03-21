@@ -9,3 +9,4 @@ langdetect
 matplotlib
 nltk
 joblib
+plotly
