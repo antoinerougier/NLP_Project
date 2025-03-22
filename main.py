@@ -30,13 +30,13 @@ def main():
     output_path_test = os.path.join(data_dir, 'data_intermediaire_test.parquet')
 
     # Télécharger et extraire les données
-    download_and_extract_data(url, filename, extract_to)
+    #download_and_extract_data(url, filename, extract_to)
 
     # Extraire le fichier tar (si nécessaire, par exemple si le fichier est déjà extrait)
-    extract_tar(filename, extract_to)
+    #extract_tar(filename, extract_to)
 
     # Créer les DataFrames
-    create_dataframe(input_pos_train, input_neg_train, input_pos_test, input_neg_test, output_path_train, output_path_test)
+    #create_dataframe(input_pos_train, input_neg_train, input_pos_test, input_neg_test, output_path_train, output_path_test)
 
     # Charger les données d'entraînement et de test
     df_train = load_data(output_path_train)
@@ -64,8 +64,7 @@ def main():
     print("Fin modèle Naive Bayes avec GridSearch")
 
     svm_model_50 = TextClassificationModel(
-        model=SVC(probability=True),
-        random_state=RANDOM_STATE,
+        model=SVC(probability=True, random_state=RANDOM_STATE),
         use_svd=True,
         use_grid_search=True,
         n_components=50,
@@ -75,8 +74,7 @@ def main():
     print("Fin modèle SVM réduit à 50")
 
     svm_model_100 = TextClassificationModel(
-        model=SVC(probability=True),
-        random_state=RANDOM_STATE,
+        model=SVC(probability=True, random_state=RANDOM_STATE),
         use_svd=True,
         use_grid_search=True,
         n_components=100,
