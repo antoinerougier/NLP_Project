@@ -9,6 +9,8 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 
+RANDOM_STATE = 42
+
 def main():
     # Créer le dossier 'data' s'il n'existe pas
     data_dir = "data"
@@ -28,13 +30,13 @@ def main():
     output_path_test = os.path.join(data_dir, 'data_intermediaire_test.parquet')
 
     # Télécharger et extraire les données
-    #download_and_extract_data(url, filename, extract_to)
+    download_and_extract_data(url, filename, extract_to)
 
     # Extraire le fichier tar (si nécessaire, par exemple si le fichier est déjà extrait)
-    #extract_tar(filename, extract_to)
+    extract_tar(filename, extract_to)
 
     # Créer les DataFrames
-    #create_dataframe(input_pos_train, input_neg_train, input_pos_test, input_neg_test, output_path_train, output_path_test)
+    create_dataframe(input_pos_train, input_neg_train, input_pos_test, input_neg_test, output_path_train, output_path_test)
 
     # Charger les données d'entraînement et de test
     df_train = load_data(output_path_train)
@@ -43,11 +45,18 @@ def main():
     # Définir les paramètres de grille pour Naive Bayes et Logistic Regression
     nb_param_grid = {'alpha': [0.1, 1.0, 10.0, 20.0]}
     svm_param_grid = {
-        'C': [10],
-        'kernel': ['linear'],
-        'gamma': ['scale'],
+        'C': [0.1, 1, 10],
+        'kernel': ['linear', 'rbf', 'poly'],
+        'gamma': ['scale', 'auto'],
+        'degree': [2, 3, 4],  
+        'coef0': [0.0, 0.1, 0.5]  
     }
-    lr_param_grid = {'C': [0.1, 1.0, 10.0], 'solver': ['liblinear', 'lbfgs']}
+    lr_param_grid = {
+        'C': [0.1, 1.0, 10.0],     
+        'solver': ['liblinear', 'lbfgs', 'saga'],
+        'penalty': ['l1', 'l2', 'elasticnet'],
+        'max_iter': [100, 200, 300]
+        }
 
     # Initialiser et entraîner les modèles
     nb_model = TextClassificationModel(model=MultinomialNB(), use_svd=False, use_grid_search=True, param_grid=nb_param_grid)
@@ -56,6 +65,7 @@ def main():
 
     svm_model_50 = TextClassificationModel(
         model=SVC(probability=True),
+        random_state=RANDOM_STATE,
         use_svd=True,
         use_grid_search=True,
         n_components=50,
@@ -66,6 +76,7 @@ def main():
 
     svm_model_100 = TextClassificationModel(
         model=SVC(probability=True),
+        random_state=RANDOM_STATE,
         use_svd=True,
         use_grid_search=True,
         n_components=100,
@@ -74,11 +85,11 @@ def main():
     svm_model_100.train(df_train)
     print("Fin modèle SVM réduit à 100")
 
-    lr_model_50 = TextClassificationModel(model=LogisticRegression(max_iter=1000), use_svd=True, use_grid_search=True, n_components=50, param_grid=lr_param_grid)
+    lr_model_50 = TextClassificationModel(model=LogisticRegression(max_iter=1000, random_state=RANDOM_STATE), use_svd=True, use_grid_search=True, n_components=50, param_grid=lr_param_grid)
     lr_model_50.train(df_train)
     print("Fin modèle Logistic Regression avec GridSearch réduit à 50")
 
-    lr_model_100 = TextClassificationModel(model=LogisticRegression(max_iter=1000), use_svd=True, use_grid_search=True, n_components=100, param_grid=lr_param_grid)
+    lr_model_100 = TextClassificationModel(model=LogisticRegression(max_iter=1000, random_state=RANDOM_STATE), use_svd=True, use_grid_search=True, n_components=100, param_grid=lr_param_grid)
     lr_model_100.train(df_train)
     print("Fin modèle Logistic Regression avec GridSearch réduit à 100")
     # Évaluer les modèles
