@@ -41,7 +41,7 @@ python main.py
 - **`src/preprocessing/download_data.py`**: Script for downloading and extracting the dataset.
 - **`src/preprocessing/pre_processing.py`**: Script for additional data preprocessing.
 - **`src/preprocessing/dataframe_creation.py`**: Script for creating a DataFrame from the processed data.
-- **`src/model.py`**: Script containing the model training and evaluation logic.
+- **`src/model/model.py`**: Script containing the model training and evaluation logic.
 - **`main.py`**: The main script to run the entire pipeline.
 
 ### Notebook
