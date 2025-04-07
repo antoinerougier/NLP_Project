@@ -11,3 +11,5 @@ nltk
 joblib
 plotly
 kaleido
+transformers
+torch

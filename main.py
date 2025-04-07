@@ -8,6 +8,7 @@ from src.visualisation.viz import plot_confusion_matrix, calculate_gini, plot_ro
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 
 RANDOM_STATE = 42
 
@@ -114,6 +115,19 @@ def main():
     y_pred_lr_50 = lr_model_50.best_model.predict(lr_model_50.svd.transform(lr_model_50.vectorizer.transform(df_test['text'])))
     y_pred_svm_100 = svm_model_100.best_model.predict(svm_model_100.svd.transform(svm_model_100.vectorizer.transform(df_test['text'])))
     y_pred_lr_100 = lr_model_100.best_model.predict(lr_model_100.svd.transform(lr_model_100.vectorizer.transform(df_test['text'])))
+
+    # Calculer et afficher l'accuracy pour chaque modèle
+    accuracy_nb = accuracy_score(y_test, y_pred_nb)
+    accuracy_svm_50 = accuracy_score(y_test, y_pred_svm_50)
+    accuracy_lr_50 = accuracy_score(y_test, y_pred_lr_50)
+    accuracy_svm_100 = accuracy_score(y_test, y_pred_svm_100)
+    accuracy_lr_100 = accuracy_score(y_test, y_pred_lr_100)
+
+    print(f"Accuracy pour Naive Bayes: {accuracy_nb:.2f}")
+    print(f"Accuracy pour SVM (50): {accuracy_svm_50:.2f}")
+    print(f"Accuracy pour Logistic Regression (50): {accuracy_lr_50:.2f}")
+    print(f"Accuracy pour SVM (100): {accuracy_svm_100:.2f}")
+    print(f"Accuracy pour Logistic Regression (100): {accuracy_lr_100:.2f}")
 
     output_dir = "output"
     if not os.path.exists(output_dir):
