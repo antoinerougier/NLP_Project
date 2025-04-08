@@ -12,4 +12,5 @@ joblib
 plotly
 kaleido
 transformers
+hf_xet
 torch
