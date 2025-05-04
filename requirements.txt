@@ -1,6 +1,6 @@
 pandas
 numpy==1.26.4
-scikit-sklearn
+scikit-learn
 pyarrow
 fastparquet
 gensim
