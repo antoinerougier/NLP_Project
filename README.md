@@ -53,4 +53,4 @@ Pour exécuter le projet, il suffit de lancer le script main.py. Ce script prend
 
 ## Notebook 
 
-Le dossier Notebook contient des notebooks Jupyter utilisés pour la visualisation des données et aussi pour tester le Fine-tuning d'un modèle LLM. Ces notebooks ne sont pas essentiels pour exécuter le projet principal.
+Le dossier Notebook contient des notebooks Jupyter utilisés pour la visualisation des données et aussi pour tester le Fine-tuning d'un modèle LLM. Ces notebooks ne sont pas essentiels pour exécuter le projet principal. Pour avoir accès aux données il faut lancer le code du main qui permet de télécharger les données et de faire le pré-processing dessus. 
