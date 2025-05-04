@@ -45,11 +45,11 @@ Pour exécuter le projet, il suffit de lancer le script main.py. Ce script prend
 
 ## Structure du projet 
 
-src/preprocessing/download_data.py : Script pour télécharger et extraire le jeu de données.
-src/preprocessing/pre_processing.py : Script pour le prétraitement supplémentaire des données.
-src/preprocessing/dataframe_creation.py : Script pour créer un DataFrame à partir des données traitées.
-src/model/model.py : Script contenant la logique d’entraînement et d’évaluation du modèle.
-main.py : Le script principal pour exécuter l’ensemble du pipeline (le code peut être long 2h : causé par le gridsearchCV).
+- src/preprocessing/download_data.py : Script pour télécharger et extraire le jeu de données.
+- src/preprocessing/pre_processing.py : Script pour le prétraitement supplémentaire des données.
+- src/preprocessing/dataframe_creation.py : Script pour créer un DataFrame à partir des données traitées.
+- src/model/model.py : Script contenant la logique d’entraînement et d’évaluation du modèle.
+- main.py : Le script principal pour exécuter l’ensemble du pipeline (le code peut être long 2h : causé par le gridsearchCV dans le modèle SVM).
 
 ## Notebook 
 
